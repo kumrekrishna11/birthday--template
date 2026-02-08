@@ -1,0 +1,366 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Hey! Happy Birthday </title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday My Friend! ✨</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<style>
+/* --- VARIABLES --- */
+:root {
+  --primary: #ff4757;
+  --gold: #ffd700;
+  --paper: #fff9e6;
+  --wood: #5d4037;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background: #000;
+}
+
+/* --- SCENES SETUP --- */
+.scene {
+  position: absolute;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  transition: all 1s ease;
+}
+
+.scene.active { display: flex; }
+
+/* --- SCENE 1 --- */
+#scene1 {
+  background: radial-gradient(circle, #2f3542 0%, #000 100%);
+  color: white;
+  cursor: pointer;
+}
+
+.glow-text {
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  animation: breathe 2s infinite;
+  font-weight: 300;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1); text-shadow: 0 0 20px var(--primary); }
+}
+
+/* --- SCENE 2: CAKE & TABLE --- */
+#scene2 {
+  background: url('https://images.unsplash.com/photo-1530103043960-ef38714abb15?q=80&w=2069&auto=format&fit=crop') no-repeat center center/cover;
+}
+#scene2::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+
+/* Curtains */
+.curtain-container { position: absolute; inset: 0; display: flex; z-index: 10; pointer-events: none; }
+.curtain { width: 50%; height: 100%; background: #b33939; transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1); box-shadow: inset 0 0 50px #000; }
+.opened .left { transform: scaleX(0); transform-origin: left; }
+.opened .right { transform: scaleX(0); transform-origin: right; }
+
+/* Title */
+.bday-title {
+  position: relative; z-index: 2; font-family: 'Great Vibes', cursive;
+  font-size: 3.5rem; color: var(--gold); text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+  margin-top: -100px; margin-bottom: 20px;
+}
+
+/* --- TABLE CONTAINER --- */
+.table-container {
+  position: relative;
+  z-index: 2;
+  margin-top: 120px; /* Moves table down */
+  width: 300px;
+  height: 150px;
+  opacity: 0;
+  transform: translateY(200px);
+  transition: all 1s ease-out;
+}
+.curtains-ready .table-container { opacity: 1; transform: translateY(0); }
+
+.table-top { width: 100%; height: 25px; background: #5D4037; border-radius: 50%; box-shadow: 0 15px 30px rgba(0,0,0,0.6); position: relative; z-index: 2; }
+.table-leg { width: 20px; height: 120px; background: #3E2723; margin: -10px auto 0; position: relative; z-index: 1; }
+.table-base { width: 100px; height: 15px; background: #3E2723; margin: 0 auto; border-radius: 50px; }
+
+/* --- CAKE BOX --- */
+.cake-box {
+  position: absolute;
+  /* Cake Position relative to Table */
+  bottom: 100px; 
+  left: 50%;
+  transform: translateX(-50%) translateY(-200px) scale(0.5); /* Start high */
+  width: 200px; /* Cake Width */
+  height: 200px; /* Cake Height */
+  cursor: pointer;
+  opacity: 0;
+  transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
+  z-index: 5;
+}
+.curtains-ready .cake-box { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+
+.cake-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); }
+
+/* =========================================
+   --- CUSTOM POSITIONS (CHANGE HERE) --- 
+   Play with 'left' and 'top' to move items
+   ========================================= */
+
+/* Candle 1 (Left most) */
+.f1 { left: 34%; top: 35px; }
+.s1 { left: 34%; top: 35px; }
+
+/* Candle 2 */
+.f2 { left: 41%; top: 42px; }
+.s2 { left: 41%; top: 42px; }
+
+/* Candle 3 (Middle) */
+.f3 { left: 49%; top: 33px; }
+.s3 { left: 49%; top: 33px; }
+
+/* Candle 4 */
+.f4 { left: 58%; top: 40px; }
+.s4 { left: 58%; top: 40px; }
+
+/* Candle 5 (Right most) */
+.f5 { left: 67%; top: 39px; }
+.s5 { left: 67%; top: 39px; }
+
+
+/* --- FLAME STYLES --- */
+.flame {
+  position: absolute;
+  font-size: 12px; /* Flame Size */
+  filter: drop-shadow(0 0 5px orange);
+  animation: flicker 0.1s infinite alternate;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+@keyframes flicker { from { opacity: 0.8; transform: translateX(-50%) scale(1); } to { opacity: 1; transform: translateX(-50%) scale(1.1); } }
+
+/* --- SMOKE STYLES --- */
+.smoke {
+  position: absolute;
+  width: 10px; height: 25px;
+  background: radial-gradient(ellipse at center, rgba(200,200,200,0.8) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  opacity: 0;
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+  pointer-events: none;
+  z-index: 10;
+}
+.smoke.puff { animation: smokeRise 1.5s ease-out forwards; }
+
+@keyframes smokeRise {
+  0% { opacity: 0.7; transform: translateX(-50%) scale(0.5) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) scale(3) translateY(-80px); }
+}
+
+/* --- SCENE 4: LETTER --- */
+#scene4 { background: url('https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover; }
+
+.envelope-center-box { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+
+.envelope-wrapper { position: relative; width: 320px; height: 200px; cursor: pointer; perspective: 1000px; z-index: 5; }
+
+.envelope {
+  position: absolute; width: 100%; height: 100%; background: #f1f2f6;
+  border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center; z-index: 6;
+  transition: 0.5s; border: 2px solid #fff;
+}
+.envelope::before { content: "From Your Friend ✉️"; font-family: 'Great Vibes'; font-size: 1.8rem; color: #ff4757; }
+
+.letter {
+  position: absolute; top: 50%; left: 50%;
+  width: 90vw; max-width: 500px; height: 0;
+  background: var(--paper); border-radius: 10px; padding: 0 25px;
+  transform: translate(-50%, -50%); overflow-y: auto;
+  transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  color: #2f3542; text-align: left; opacity: 0; z-index: 4;
+}
+
+/* Unfold State */
+.unfold .letter { height: 550px; max-height: 80vh; opacity: 1; padding: 40px 30px; z-index: 10; }
+.unfold .envelope { opacity: 0; pointer-events: none; transform: translateY(100px); }
+
+.letter h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; border-bottom: 2px solid #eee; }
+.letter p { font-size: 1rem; line-height: 1.7; margin-bottom: 15px; }
+
+.instruction { position: absolute; bottom: 30px; z-index: 2; color: #fff; background: rgba(0,0,0,0.5); padding: 8px 20px; border-radius: 30px; }
+</style>
+</head>
+
+<body>
+
+<audio id="mainMusic" loop>
+  <source src="https://various-indigo-mdcmpkkp9u.edgeone.app/Priya%20phool%20(ringtone)%20Nepali%20song%20(movie%20%20unko%20sweeter)%20[%20Download%20link%20]%20⬇️.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="blowSfx">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg">
+</audio>
+
+<div class="scene active" id="scene1" onclick="startApp()">
+  <div class="glow-text">Hey! Your Friend has a surprise for you... ✨</div>
+</div>
+
+<div class="scene" id="scene2">
+  <div class="curtain-container" id="curtains">
+    <div class="curtain left"></div>
+    <div class="curtain right"></div>
+  </div>
+
+  <h1 class="bday-title">Happy Birthday Dear!</h1>
+
+  <div class="table-container">
+    <div class="cake-box" id="cake" onclick="blowOut()">
+      <img src="https://uploads.onecompiler.io/4444s4cvz/44b3g5tf6/1000010899.png" class="cake-img" alt="Birthday Cake">
+
+      <div id="flames-container">
+        <div class="flame f1"> <img src="https://uploads.onecompiler.io/4444s4cvz/44b3dthsa/1000010881.png" style="width:10px; height:auto;" >  </div>
+        <div class="flame f2"> <img src="https://uploads.onecompiler.io/4444s4cvz/44b3dthsa/1000010881.png" style="width:10px; height:auto;" >  </div>
+        <div class="flame f3"> <img src="https://uploads.onecompiler.io/4444s4cvz/44b3dthsa/1000010881.png" style="width:10px; height:auto;" >  </div>
+        <div class="flame f4"> <img src="https://uploads.onecompiler.io/4444s4cvz/44b3dthsa/1000010881.png" style="width:10px; height:auto;" >  </div>
+        <div class="flame f5"> <img src="https://uploads.onecompiler.io/4444s4cvz/44b3dthsa/1000010881.png" style="width:10px; height:auto;" > </div>
+      </div>
+
+      <div id="smoke-container">
+        <div class="smoke s1"></div>
+        <div class="smoke s2"></div>
+        <div class="smoke s3"></div>
+        <div class="smoke s4"></div>
+        <div class="smoke s5"></div>
+      </div>
+    </div>
+
+    <div class="table-top"></div>
+    <div class="table-leg"></div>
+    <div class="table-base"></div>
+  </div>
+
+  <p class="instruction">Tap the cake to blow candles! 💨</p>
+</div>
+
+<div class="scene" id="scene4">
+  <div class="envelope-center-box" id="mailBox">
+    <div class="envelope-wrapper" id="mail" onclick="openLetter()">
+      <div class="envelope"></div>
+      <div class="letter">
+        <h2>Hey Dear! ✨</h2>
+        <p>I wanted to write something truly special for you today. As your friend, I've seen the light you bring into the world, and I'm so glad to be a part of your journey.</p>
+        <p>On your birthday, my only wish is that your smile stays as bright as it is today. May this year bring you all the success, peace, and endless joy you've been dreaming of.</p>
+        <p>You're not just growing a year older; you're growing more incredible every day. Keep being the amazing person you are.</p>
+        <p>Enjoy your day to the fullest, you deserve every bit of it!</p>
+        <p style="text-align: right; font-family: 'Dancing Script'; font-size: 1.8rem; color: #ff4757; margin-top: 20px;">
+          Happy Birthday! ❤️<br>- Your Friend
+        </p>
+      </div>
+    </div>
+  </div>
+  <p class="instruction" id="letterHint">Click the envelope to read your letter ✉️</p>
+</div>
+
+<script>
+const mainMusic = document.getElementById('mainMusic');
+const blowSfx = document.getElementById('blowSfx');
+
+function startApp() {
+  document.getElementById('scene1').classList.remove('active');
+  document.getElementById('scene2').classList.add('active');
+  
+  // Try to play music
+  mainMusic.play().catch(e => console.log("Click required for music"));
+  
+  setTimeout(() => {
+    document.getElementById('curtains').classList.add('opened');
+    setTimeout(() => {
+        document.getElementById('scene2').classList.add('curtains-ready');
+    }, 500);
+  }, 500);
+}
+
+function blowOut() {
+  // Play sound
+  if(blowSfx) blowSfx.play();
+
+  // Hide Flames
+  const flameContainer = document.getElementById('flames-container');
+  if(flameContainer) flameContainer.style.display = 'none';
+
+  // Show Smoke
+  const smokes = document.querySelectorAll('.smoke');
+  smokes.forEach(s => s.classList.add('puff'));
+
+  // Confetti
+  confetti({
+    particleCount: 150, spread: 80, origin: { y: 0.6 },
+    colors: ['#ff4757', '#ffd700', '#ffffff']
+  });
+
+  // Change Scene
+  setTimeout(() => {
+    document.getElementById('scene2').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('scene2').classList.remove('active');
+      document.getElementById('scene4').classList.add('active');
+    }, 1000);
+  }, 2000);
+}
+
+function openLetter() {
+  const mailBox = document.getElementById('mailBox');
+  const letterHint = document.getElementById('letterHint');
+  
+  if(mailBox) mailBox.classList.add('unfold');
+  if(letterHint) letterHint.style.opacity = '0';
+
+  // Confetti Loop
+  var end = Date.now() + (15 * 1000);
+  (function frame() {
+    confetti({
+      particleCount: 2, angle: 60, spread: 55, origin: { x: 0 },
+      colors: ['#ff4757', '#ffb8b8']
+    });
+    confetti({
+      particleCount: 2, angle: 120, spread: 55, origin: { x: 1 },
+      colors: ['#ff4757', '#ffb8b8']
+    });
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+}
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
